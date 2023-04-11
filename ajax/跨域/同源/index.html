@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>首页</title>
+        
+    </head>
+    <body>
+        <h1>福气满满</h1>
+        <button>点击接受好运</button>
+        <script>
+            const btn = document.querySelector("button");
+            // 绑定事件
+            btn.onclick = function() {
+                // 实例化
+                const xhr = new XMLHttpRequest();
+                // 初始化请求
+                // 如果是满足同源策略的，url可以省略根目录
+                xhr.open("GET", '/data');
+                // 发送请求
+                xhr.send();
+                // 处理返回数据
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            console.log(xhr.response);
+                        }
+                    }
+                }
+
+            }
+        </script>    
+    </body>
+</html>

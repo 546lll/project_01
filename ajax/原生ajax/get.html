@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AJAX GET请求</title>
+        <style>
+            #result {
+                width: 200px;
+                height: 100px;
+                border: solid 1px #20b;
+                background-color: #08b;
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <button>点击发送</button>
+        <button>点击取消</button>
+        <div id="result"></div>
+        <script>
+            // 获取元素
+            // const btn = document.getElementsByTagName("button")[0];
+            const btns = document.querySelectorAll("button");
+            const res = document.querySelector("#result");
+            // 绑定事件
+
+            
+            // 1.创建实例化对象，XMLHttpRequest包含了许多有关传输数据的属性和方法
+            let xhr = new XMLHttpRequest();
+             
+            // 标识变量， 用于处理重复请求
+            let ispending = false
+
+            // **GET请求
+            btns[0].onclick = function() {
+                
+                // 异常设置
+                /* 
+                // 超时设置2s
+                xhr.timeout = 2000;
+                // 超时回调
+                xhr.ontimeout = function() {
+                    alert("网络加载超时，请稍后尝试！")
+                } 
+                // 网络异常回调
+                xhr.onerror = function() {
+                    alert("网络异常，请稍后尝试！")
+                }
+                */
+
+                // 处理重复请求，取消掉
+               if (ispending) xhr.abort();
+               // 设置标识变量
+               ispending = true
+
+                // 2.设置请求方法和url
+                // 在url中传入参数，在后面添加“？a=100&b=200
+                xhr.open('GET', 'http://127.0.0.1:8000/delay')
+
+                // 3.发送
+                xhr.send();
+
+                // 4.事件绑定，处理服务端返回结果
+                // readystate是xhr对象中的属性，有五个状态：0,1,2,3,4，可以触发4次，4是结果全部返回
+                xhr.onreadystatechange = function() {
+                    
+                    if (xhr.readyState === 4) {
+                        // 判断响应状态码 200 404 403 401 500
+                        // 2xx 都是表示成功
+
+                        // 更新标识变量，要考虑请求失败的情况
+                        ifpending = false;
+                        
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            // 处理结果，包括四部分：行 头 空行 体
+                            // 响应行
+                            // console.log(xhr.status);                // 状态码
+                            // console.log(xhr.statusText);            // 状态字符串
+                            // console.log(xhr.getAllResponseHeaders()); // 所有响应头
+                            // console.log(xhr.response)               // 响应体
+                            res.innerHTML= xhr.response             // 改变div中的内容
+                        }
+                    }
+
+                }
+            }
+
+            // 取消请求
+            btns[1].onclick = function() {
+                xhr.abort();
+            }
+            
+            /*
+            // ** POST请求,需要在server.js设置接受post请求
+            res.addEventListener("mouseover", function() {
+                // 实例化
+                const xhr = new XMLHttpRequest();
+
+                //设置响应体数据的类型
+                xhr.responseType = "json"
+
+                // 初始化POST请求
+                // 如果是IE缓冲区问题，
+                // IE缓冲区，IE浏览器会把从服务器返回的数据存到本地缓冲区，下次事件调用从本地走，不能及时更新页面
+                // 需要在url中传入参数, 即'http://127.0.0.1:8000/server？t=' + Date.now(),使每次请求都不一样
+                xhr.open("POST", 'http://127.0.0.1:8000/delay')
+                // 设置请求头
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')   // 预定义请求头
+                // xhr.setRequestHeader('name', 'zhangsan');   // 自定义请求头，需要sever允许接受所有类型的头信息
+
+                // 发送
+                xhr.send("a=100&b=200");
+
+                // 事件绑定
+                xhr.onreadystatechange = function() {
+                    
+                    if (xhr.readyState === 4) {
+                        // 判断响应状态码 200 404 403 401 500
+                        // 2xx 都是表示成功
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            // 处理结果，包括四部分：行 头 空行 体
+                            // 响应行
+                            res.innerHTML= xhr.response //改变div中的内容
+                            
+                            // 服务器返回的数据是字符串，需要 1.手动对数据进行转化
+                            // let data = JSON.parse(xhr.response);
+                            
+                            
+                            // 2.如果是自动转化，需要借助xhr上的responseType方法
+                            //let data = xhr.response;
+                            //console.log(data);
+                            //res.innerHTML = data.name
+
+
+                        }
+                    }
+
+                }
+
+            })
+            */
+            
+        </script>
+    </body>
+</html>

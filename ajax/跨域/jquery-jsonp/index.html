@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>原生jsonp</title>  
+        <script crossorigin="anonymous" src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>     
+    </head>
+    <body>
+        用户名： <input type="text" id="username">
+        <p></p>
+        <script>
+            function handle(data) {
+
+            }
+            // 绑定事件
+            $("input").blur(function() {
+                // $.getJSON(url,function)没用
+                $.ajax({
+                    // url固定写法 对应的是server-express.js
+                    url: "http://127.0.0.1:8000/jquery-check-username?callback=?",
+                    /*
+                    // **两种方式,对应的是expressLearn的router-use.js:
+                    // 第一种：加callback的url和dataType为json
+                    // 第二种：不加callback 的url和dataType为jsonp
+                    //url: "http://127.0.0.1:9000/api/jsonp",
+                    //url: "http://127.0.0.1:9000/api/jsonp?callback=?",
+                    */
+                    // 请求类型
+                    // 请求类型
+                    type: 'GET',
+                    // 响应体类型
+                    dataType: 'json',
+                    //dataType: 'jsonp',
+                    // 成功的回调
+                    success: function(data) {
+                        $("input").css("border", "solid 2px red")
+                        $("p").html(`提示： ${data.msg}`)
+                        console.log(data)
+                    },
+                    // 失败的回调
+                    error: function() {
+                        console.log('出错啦')
+                    },
+                    /*
+                    //头信息，自定义的头信息需要再server.js设置一下
+                    headers: {
+                        c: 300,
+                        d: 400
+                    },
+                    */
+                })
+
+            })
+        </script>
+    </body>
+</html>
