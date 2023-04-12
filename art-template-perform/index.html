@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Documents</title>
+  <!-- 导入模版引擎  -->
+  <script src="https://unpkg.com/art-template@4.13.2/lib/template-web.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+
+<body>
+    
+    <div id="container"></div>
+    <!-- 在script中定义模板的html结构, 注意type值-->
+    <script type="text/html" id="tpl-user">
+        <h1>name: {{name}} </br>age: {{age}}</br>test: {{@test}}</br></h1>
+        <div>
+            <!-- 条件输出 -->
+            {{if flag === 0}}
+            flag=0
+            {{else if flag === 1}}
+            flag=1
+            {{/if}}
+        </div>
+        <ul>
+            <!-- 循环输出 -->
+            爱好:
+            {{each hobby}}
+            <li>{{$index+1}}. {{$value}}</li>
+            {{/each}}
+        </ul>
+        <!-- 过滤器 -->
+        <h3>{{regTime | dateFormat}}</h3>
+    </script>
+
+    <script>
+        // 定义过滤器函数
+        template.defaults.imports.dateFormat = function(date) {
+            var y = date.getFullYear()
+            var m = date.getMonth() + 1
+            var d = date.getDate()
+            return y + '-' + m + '-' + d;
+        }
+        // 待渲染的数据
+        var data = {
+            name: "zs",
+            age: "27",
+            test: "<span>原文输出要加@</span>",
+            flag: 0,
+            hobby: ["吃饭", "睡觉", "打豆豆"],
+            regTime: new Date()
+        }
+        // 调用template函数（模板Id, 待渲染的数据）,id可以不加#
+        var str =  template('tpl-user', data)
+        // 渲染html结构
+        $("#container").html(str)
+    </script>
+</body>
+
+</html>

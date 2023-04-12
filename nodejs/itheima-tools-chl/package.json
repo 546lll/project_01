@@ -1,0 +1,12 @@
+{
+    "name": "itheima-tools-chl",
+    "version": "1.0.0",
+    "main": "index.js",
+    "description": "提供了格式化时间、HTMLEscpe相关的功能",
+    "keywords": [
+        "itheima",
+        "dataFormat",
+        "escape"
+    ],
+    "license": "ISC"
+}

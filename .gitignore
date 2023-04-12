@@ -1,0 +1,4 @@
+#忽略所有node_modules文件
+node_modules/
+#忽略test.js文件
+test.js
